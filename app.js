@@ -31,6 +31,9 @@ app.use(morgan(':remote-addr :method :url :status :response-time ms - :res[conte
 app.get('/', (req, res) => {
     res.render('index')
 });
+app.get('/throwerror', (req, res) => {
+    getAnErrorHere();
+})
 app.get('/campgrounds', async (req, res) => {
     const campgrounds = await Campground.find({});
     res.render('campgrounds/index', { campgrounds })
@@ -40,12 +43,7 @@ app.get('/campgrounds/new', (req, res) => {
 });
 
 app.post('/campgrounds', async (req, res) => {
-    const campground = new Campground();
-    campground.title = req.body.campground.title;
-    campground.price = req.body.campground.price;
-    campground.description = req.body.campground.description;
-    campground.image = req.body.campground.image;
-    campground.location = req.body.campground.location;
+    const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`)
 });
@@ -76,8 +74,12 @@ app.get('*', (req, res) => {
     res.send("404 error")
 });
 
-
-
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 });
+
+app.use(function (error, req, res, next) {
+    res.render('error', {error});
+    console.error(error)
+    next(err);
+})
