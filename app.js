@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const Campground = require('./models/campground');
 const morgan = require('morgan');
@@ -21,11 +22,11 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
-
+app.engine('ejs', ejsMate);
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
-app.use(morgan('tiny'));
+app.use(morgan(':remote-addr :method :url :status :response-time ms - :res[content-length]'));
 
 app.get('/', (req, res) => {
     res.render('index')
@@ -39,7 +40,12 @@ app.get('/campgrounds/new', (req, res) => {
 });
 
 app.post('/campgrounds', async (req, res) => {
-    const campground = new Campground(req.body.campground);
+    const campground = new Campground();
+    campground.title = req.body.campground.title;
+    campground.price = req.body.campground.price;
+    campground.description = req.body.campground.description;
+    campground.image = req.body.campground.image;
+    campground.location = req.body.campground.location;
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`)
 });
