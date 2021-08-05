@@ -12,8 +12,9 @@ const ExpressError = require('./utils/ExpressError');
 const { campgroundSchema } = require('./schemas')
 const catchAsync = require('./utils/catchAsync');
 const morgan = require('morgan');
+const uri = process.env.MONGODB_URI;
 const port = 3000;
-mongoose.connect('mongodb://localhost:27017/yelp-camp', {
+mongoose.connect(uri, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
