@@ -5,6 +5,7 @@ const reviewSchema = new Schema ({
     user: String,
     rating: Number, 
     text: String
+    
 });
 
 module.exports = mongoose.model('Review', reviewSchema);

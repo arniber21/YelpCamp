@@ -1,2 +1,10 @@
 <% layout('layouts/boilerplate') %>
 <h1>Welcome to YelpCamp!</h1>
+<% if (!isLoggedIn) {%>
+    <h5>You are logged in!</h5>
+    <a href="/campgrounds" class="btn btn-primary">View Campgrounds</a>
+<% } else{%> 
+    <h5>You are not logged in!</h5>
+    <a href="/signin" class="btn btn-primary">Log In</a>
+    <a href="/signup" class="btn btn-success">Sign Up</a>
+<% } %>

@@ -19,9 +19,11 @@
   },
   "homepage": "https://github.com/arniber21/YelpCamp#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.5",
     "ejs": "^3.1.6",
     "ejs-mate": "^3.0.0",
     "express": "^4.17.1",
+    "hash.js": "^1.1.7",
     "joi": "^17.4.2",
     "method-override": "^3.0.0",
     "mongoose": "^5.13.5",
