@@ -6,9 +6,9 @@
 <div class="row">
     <% for (let campground of campgrounds){%>
         <div class="col-4 mb-4">
-            <div class="card" >
-                <img src="<%= campground.image %>" class="card-img" height="25%">
-                <div class="card-body">
+            <div class="card">
+                <img src="<%= campground.image %>" class="card-img" style="object-fit: fill;" width="414" height="276">
+                <div class="card-img-overlay text-white">
                     <h5 class="card-title"><%= campground.title %></h5>
                     <h6 class="card-subtitle mb-2 "><%= campground.location %></h6>
                     <a href="/campgrounds/<%= campground.id %>" class="btn btn-primary">View</a>

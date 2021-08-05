@@ -1,17 +1,49 @@
 <% layout('./layouts/boilerplate') %>
-<h1><%= campground.title %></h1>
-<h2><%= campground.location %></h2>
-<img src="<%= campground.image %>" alt="">
-<p><%= campground.description %></p>
-<p> <a href="/campgrounds/<%=campground._id%>/edit" class="btn btn-primary">Edit</a>
-</p>
-<p>
-<form action="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
-    <button class="btn btn-danger">Delete</button>
-</form>
-</p>
-<footer>
-    <a href="/campgrounds">All Campgrounds</a>
-</footer>
+<body style="background-image:url('<%= campground.image %>'); background-repeat: no-repeat; background-size: cover;">
+    
+</body>
+<div class="row">
+    <div class="col-6">
+        <div class="card text-center mb-4">
+            <div class="card-body">
+                <h5 class="card-title" style="font-size: 3em;"><%= campground.title %></h5>
+                <h5 class="card-title text-muted"><%= campground.location %></h5>
+                <p class="card-text"><%= campground.description %></p>
+                <h5 class="card-subtitle">$<%= campground.price %> per night</h5>
+                <br>
+                <a href="/campgrounds/<%=campground._id%>/edit" class="btn btn-primary">Edit</a>
+                <a href="/campgrounds/<%= campground._id %>/reviews" class="btn btn-success">Add Comment</a>
+                <form action="/campgrounds/<%=campground._id%>?_method=DELETE" style="display:inline;" method="POST">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+                <a href="/campgrounds" class="btn btn-secondary">All Campgrounds</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h2>Comments</h2>
+            </div>
+        </div>
+        <% for (let r of campground.reviews) { %>
+            <div class="card text-center mb-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                            <h5 class="card-subtitle"><%= r.user %></h5>
+                            <p class="card-text"><%= r.text %></p>
+                            <h5 class="card-subtitle mb-2"><%= r.rating %> of 10</h5>
+                            <form action="/campgrounds/<%=campground._id%>/reviews/<%=r._id%>?_method=DELETE" method="POST">
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                        <br>
+                    </div>
+                </div>
+            </div>   
+        <% } %>     
+    </div>
+</div>
+
+
 
 

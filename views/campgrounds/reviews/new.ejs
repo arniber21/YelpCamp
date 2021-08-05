@@ -1,0 +1,22 @@
+<% layout('./layouts/boilerplate') %>
+<h1>New Review</h1>
+<form action="/campgrounds/<%= id %>/reviews" method="POST" class="needs-validation" novalidate>
+    <div class="mb-2">
+        <div class="mb-2">
+            <label for="user" class="form-label">User</label>
+            <input type="text" id="user" class="form-control" name="review[user]" required>
+        </div>
+        <div class="mb-2">
+            <label for="text" class="form-label">Text</label>
+            <input type="text" id="text" name="review[text]" class="form-control" required>
+        </div>
+        <div class="mb-5">
+            <label for="rating" class="form-label">Rating</label>
+            <input type="number" id="rating" class="form-control" max="10" min="0" name=review[rating]" required>
+        </div>
+        <button class="btn btn-primary">Add review</button>
+        <a href="/campgrounds/<%= id %>" class="btn btn-danger">Cancel</a>
+        <a href="/campgrounds" class="btn btn-secondary">All Campgrounds</a>
+    </div>
+</form>
+
