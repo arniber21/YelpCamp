@@ -12,9 +12,9 @@ const ExpressError = require('./utils/ExpressError');
 const { campgroundSchema } = require('./schemas')
 const catchAsync = require('./utils/catchAsync');
 const morgan = require('morgan');
-const uri = process.env.MONGODB_URI;
-const port = 3000;
-mongoose.connect(uri, {
+const MONGODB_URI = process.env.MONGODB_URI;
+const port = 5000;
+mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
@@ -51,7 +51,6 @@ const userLoggedIn = catchAsync(async(req, res, next) => {
     try { 
         const password = req.cookies.password;
         const user = await User.findOne({username: req.cookies.username});
-        
         if(user.password == password){
             next();
         }
@@ -151,7 +150,7 @@ app.delete('/campgrounds/:id/reviews/:rID', userLoggedIn, catchAsync(async (req,
 app.get('/signup', (req, res) => {
     res.render('signup');
 })
-app.post('/signup', userLoggedIn, catchAsync(async (req, res, next) => {
+app.post('/signup', catchAsync(async (req, res, next) => {
     const newUser = new User(req.body.user);
     newUser.password = sha512().update(newUser.password).digest('hex');
     await newUser.save();
