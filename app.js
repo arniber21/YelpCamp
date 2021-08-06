@@ -13,7 +13,7 @@ const { campgroundSchema } = require('./schemas')
 const catchAsync = require('./utils/catchAsync');
 const morgan = require('morgan');
 const MONGODB_URI = process.env.MONGODB_URI;
-const port = 5000;
+const port = process.env.PORT;
 mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -184,6 +184,6 @@ app.use(function (error, req, res, next) {
     res.status(statusCode).render('error', { message });
 })
 
-app.listen(port, () => {  
+app.listen(process.env.PORT || 5000, () => {  
     console.log(`Listening on port ${port}`);
 });
