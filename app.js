@@ -8,6 +8,7 @@ const Review = require('./models/review');
 const methodOverride = require('method-override');
 const Campground = require('./models/campground');
 const User = require('./models/user');
+const session = require('express-session');
 const ExpressError = require('./utils/ExpressError');
 const { campgroundSchema } = require('./schemas')
 const catchAsync = require('./utils/catchAsync');
@@ -27,7 +28,7 @@ db.once("open", () => {
 });
 
 const app = express();
-
+app.use(session({secret: 'verySecret'}));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 app.engine('ejs', ejsMate);
@@ -47,10 +48,18 @@ const validateCampground = (req, res, next) => {
     }
 }
 
+const createSession = (req, res, next) => {
+    if(!req.session.username) req.session.username;
+    if(!req.session.password) req.session.password;
+    next();
+}
+
+app.use(createSession);
+
 const userLoggedIn = catchAsync(async(req, res, next) => {
     try { 
-        const password = req.cookies.password;
-        const user = await User.findOne({username: req.cookies.username});
+        const password = req.session.password;
+        const user = await User.findOne({username: req.session.username});
         if(user.password == password){
             next();
         }
@@ -65,9 +74,8 @@ const userLoggedIn = catchAsync(async(req, res, next) => {
 
 });
 
-
 app.get('/', catchAsync(async(req, res) => {
-    const isLoggedIn = (req.cookies.password == await User.findOne({username: req.cookies.username}));
+    const isLoggedIn = (req.session.password == await User.findOne({username: req.session.username}));
     console.log(isLoggedIn);
     res.render('index', {isLoggedIn});
 }));
@@ -84,7 +92,7 @@ app.get('/campgrounds/new', userLoggedIn,(req, res) => {
 
 app.post('/campgrounds', validateCampground, userLoggedIn, catchAsync(async (req, res, next) => {
     const campground = new Campground(req.body.campground);
-    const user = await User.findOne({username: req.cookies.username});
+    const user = await User.findOne({username: req.session.username});
     campground.username = user.username;
     user.campgrounds.push(campground);
     await campground.save();
@@ -93,7 +101,7 @@ app.post('/campgrounds', validateCampground, userLoggedIn, catchAsync(async (req
 }));
 
 app.get('/campgrounds/:id', userLoggedIn,catchAsync(async (req, res, next) => {
-    const user = req.cookies;
+    const user = req.session;
     const campground = await Campground.findById(req.params.id).populate('reviews');
     res.render('campgrounds/show', { campground, user});
 }));
@@ -121,16 +129,16 @@ app.get('/campgrounds/:id/reviews', userLoggedIn, catchAsync(async (req, res, ne
 }));
 
 app.post('/logout', userLoggedIn, catchAsync(async (req, res, next)=>{
-    res.clearCookie('username');
-    res.clearCookie('password');
-    res.redirect('/');
+    req.session.username = undefined;
+    req.session.username = undefined;
+    res.redirect('/signin');
 }))
 
 app.post('/campgrounds/:id/reviews', userLoggedIn, catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     const review = new Review(req.body.review);
-    const user = await User.findOne({username: req.cookies.username});
+    const user = await User.findOne({username: req.session.username});
     review.user = user.username;
     user.reviews.push(review);
     campground.reviews.push(review);
@@ -168,8 +176,8 @@ app.post('/signin', catchAsync(async(req, res) => {
     if(user.password != password){
         throw new ExpressError('Username or Password Incorrect', 401);
     } else {
-        res.cookie('username', user.username);
-        res.cookie('password', password);
+        req.session.username = user.username;
+        req.session.password = password;
         res.redirect('/');
     }
 }));
