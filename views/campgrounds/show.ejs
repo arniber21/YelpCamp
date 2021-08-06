@@ -1,6 +1,6 @@
 <% layout('./layouts/boilerplate') %>
 <body style="background-image:url('<%= campground.image %>'); background-repeat: repeat; background-size: cover;">
-    <div class="row">
+    <div class="row py-5">
         <div class="col-6">
             <div class="card text-center mb-4">
                 <div class="card-body">
@@ -27,6 +27,15 @@
                     <%}%>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-header" style="background-color: white;">
+                        Map
+                    </h1>
+                    <div id='map' class="container mb-3" ></div>
+                </div>
+            </div>
+            
         </div>
         <div class="col-6">
             <div class="card mb-3">
@@ -55,4 +64,7 @@
     </div>
 </body>
 
-
+<script type='text/javascript'>
+    var singleItem = <%-JSON.stringify(campground)%>
+</script>
+<script src="/map.js"></script>

@@ -8,6 +8,7 @@ const Review = require('./models/review');
 const methodOverride = require('method-override');
 const Campground = require('./models/campground');
 const User = require('./models/user');
+const flash = require('connect-flash');
 const session = require('express-session');
 const ExpressError = require('./utils/ExpressError');
 const { campgroundSchema } = require('./schemas')
@@ -36,6 +37,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
 app.use(morgan(':remote-addr :method :url :status :response-time ms - :res[content-length]'));
+app.use(flash());
+app.use(express.static('public'))
 
 const validateCampground = (req, res, next) => {
     const { error } = campgroundSchema.validate(req.body);
@@ -64,20 +67,18 @@ const userLoggedIn = catchAsync(async(req, res, next) => {
             next();
         }
         else {
-            throw new ExpressError("Invalid login info", 401);
+            throw new ExpressError(error, 401);
         }
     } catch(e){
-        console.log(e);
-        throw new ExpressError("Invalid login info", 401);
+        req.flash('error', 'You must be signed in to access this page!')
+        res.redirect('/signin')
     }
-    
-
 });
 
 app.get('/', catchAsync(async(req, res) => {
     const isLoggedIn = (req.session.password == await User.findOne({username: req.session.username}));
     console.log(isLoggedIn);
-    res.render('index', {isLoggedIn});
+    res.render('index', {isLoggedIn, info: req.flash('info')});
 }));
 app.get('/throwerror', (req, res) => {
     getAnErrorHere();
@@ -131,7 +132,8 @@ app.get('/campgrounds/:id/reviews', userLoggedIn, catchAsync(async (req, res, ne
 app.post('/logout', userLoggedIn, catchAsync(async (req, res, next)=>{
     req.session.username = undefined;
     req.session.username = undefined;
-    res.redirect('/signin');
+    req.flash('info', 'You have been logged out!')
+    res.redirect('/');
 }))
 
 app.post('/campgrounds/:id/reviews', userLoggedIn, catchAsync(async (req, res, next) => {
@@ -163,22 +165,24 @@ app.post('/signup', catchAsync(async (req, res, next) => {
     newUser.password = sha512().update(newUser.password).digest('hex');
     await newUser.save();
     console.log(newUser);
-    res.redirect('/');
+    req.flash('success', 'Successfully created your new Account!')
+    res.redirect('/signin');
 }));
 
 app.get('/signin', (req, res) => {
-    res.render('signin');
+    res.render('signin', {error: req.flash('error'), success: req.flash('success')});
 });
 
 app.post('/signin', catchAsync(async(req, res) => {
     const password = sha512().update(req.body.user.password).digest('hex');
     const user = await User.findOne({username: req.body.user.username});
     if(user.password != password){
-        throw new ExpressError('Username or Password Incorrect', 401);
+        req.flash('error', 'Incorrect Login Credentials');
+        res.redirect('/signin');
     } else {
         req.session.username = user.username;
         req.session.password = password;
-        res.redirect('/');
+        res.redirect('/campgrounds');
     }
 }));
 

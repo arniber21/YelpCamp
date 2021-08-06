@@ -1,0 +1,33 @@
+.home{
+    background-image: url('https://images.unsplash.com/photo-1517824806704-9040b037703b');
+    background-size: 100%;
+    padding: 5rem 2rem;
+    padding-bottom: 0rem;
+}
+.white-header{
+    color: white;
+}
+.home .h3{
+    color: white;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.home .btn{
+    margin: 3rem 0rem;
+    margin-top: 12rem;
+}
+.sign{
+    padding: 5rem;
+}
+.sign .btn{
+    margin: 0rem 5rem;
+    margin-top: 15rem;
+    padding: 1rem 10rem;
+}
+#map {
+    height: 400px;
+    /* The height is 400 pixels */
+    width: 100%;
+    /* The width is the width of the web page */
+}
+  

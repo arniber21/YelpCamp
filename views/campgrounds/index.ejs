@@ -1,14 +1,17 @@
 <% layout('./layouts/boilerplate') %>
-<h1>All Campgrounds</h1>
-<div>
-    <a class="btn btn-primary mb-2" href="/campgrounds/new">Add Campground</a>
+<div class="py-4 text-center">
+    <h1>All Campgrounds</h1>
+    <a class="btn btn-primary" href="/campgrounds/new">Add Campground</a>
 </div>
-<div class="row">
+<div class="row d-flex justify-content-center" style="text-align: center; " >
+    <div class="col-12">
+        <div id='map' class="container mb-3" style="border-radius: 0.5rem;"></div>
+    </div>
     <% for (let campground of campgrounds){%>
-        <div class="col-4 mb-4">
+        <div class="col-auto mb-4 ">
             <div class="card">
-                <img src="<%= campground.image %>" class="card-img" style="object-fit: fill;" width="414" height="276">
-                <div class="card-img-overlay text-white">
+                <img src="<%= campground.image %>" class="card-img-top" style="object-fit: fill;" width="490" height="276">
+                <div class="card-body">
                     <h5 class="card-title"><%= campground.title %></h5>
                     <h6 class="card-subtitle mb-2 "><%= campground.location %></h6>
                     <a href="/campgrounds/<%= campground.id %>" class="btn btn-primary">View</a>
@@ -17,3 +20,7 @@
         </div>
     <% }%>
 </div>
+<script type='text/javascript'>
+    var campgrounds = <%-JSON.stringify(campgrounds)%>
+</script>
+<script src="map.js"></script>

@@ -1,10 +1,82 @@
 <% layout('layouts/boilerplate') %>
-<h1>Welcome to YelpCamp!</h1>
-<% if (!isLoggedIn) {%>
-    <h5>You are logged in!</h5>
-    <a href="/campgrounds" class="btn btn-primary">View Campgrounds</a>
-<% } else{%> 
-    <h5>You are not logged in!</h5>
-    <a href="/signin" class="btn btn-primary">Log In</a>
-    <a href="/signup" class="btn btn-success">Sign Up</a>
-<% } %>
+</div>
+<section class="py-10 home">
+    <div class="container">
+        <% if(info.length > 0) {%> 
+            <div class="alert alert-primary">
+                <%= info %>
+            </div>
+        <% } %>
+        <div class="row">
+            <div class="col 6">
+                <h1 class="white-header">Find Your Next Adventure. </h1>
+                <h3 class="white-header">Discover Campgrounds, Trails, and more at YelpCamp. </h3>
+                <% if (!isLoggedIn) {%>
+                    <a href="/campgrounds" class="btn btn-primary btn-lg">View Campgrounds</a>
+                <% } else{%> 
+                    <a href="/signin" class="btn btn-primary btn-lg">Log In</a>
+                    <a href="/signup" class="btn btn-success btn-lg">Sign Up</a>
+                <% } %>
+            </div>
+            <div class="col-6">
+                <div class="card text-center mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-size: 3em;">Muir Woods</h5>
+                        <h5 class="card-title text-muted">San Francisco, CA</h5>
+                        <p class="card-text">People do not just visit Muir Woods. They come from around the globe to pay homage to nature in this cathedral of redwoods. The trees' ages range from 400 to 800 years, their height up to 250 feet. Flat easy trails loop through the groves. Muir Woods National Monument was established on January 9, 1908 when President Roosevelt signed legislation to protect an old-growth coast redwood forest from destruction. </p>
+                        <h5 class="card-subtitle">Free</h5>
+                        <br>
+                    </div>
+                    <div class="card-footer text-center">
+                        YelpCamp Team
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card text-center mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-size: 3em;">Ute Trail</h5>
+                        <h5 class="card-title text-muted">Rocky Mountain National Park, CO</h5>
+                        <p class="card-text">In the heart of the rockies, Rocky Mountain National Park is one of the most beautiful places in the entire world. The Ute Trail is one of the oldest trails in the park, located right off of Trail Ridge road. Hike tens of miles of beautiful trail spanning stunning vistas, Mountain Peaks, lakes, wildlife areas, and more. Forking from the trail are other renowned trails, including the Mount Ida trail. </p>
+                        <h5 class="card-subtitle">Free</h5>
+                        <br>
+                    </div>
+                    <div class="card-footer text-center">
+                        YelpCamp Team
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <h2 class="white-header">Trails</h2>
+                <h4 class="white-header">From beginners and kids just learning to appreciate the outdoors to the most dedicated hikers searching for the thrill of adventure, YelpCamp will help find the trail that's right for you. </h4>
+            </div>
+            <div class="col-6">
+                <h2 class="white-header">Campgrounds</h2>
+                <h4 class="white-header">Find a quick getaway in your backyard after a long week, Or a week long expedition in the midst of the Great Outdoors. </h4>
+            </div>
+            <div class="col-6">
+                <div class="card text-center mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-size: 3em;">Saranac Lake</h5>
+                        <h5 class="card-title text-muted">Franklin County, NY</h5>
+                        <p class="card-text">Located in Upsate New York, just 3 hours from Albany or 2 from Montreal, The Lower Saranac Lake Islands provide miles and miles of boater recreation and direct access to four other lakes through a set of locks which allow your vessel to be raised or lowered to the right water level. Coupled with the ability to camp on selected island sites, being able to fish for your dinner after hours of waterskiing might make you want to stay here forever.</p>
+                        <h5 class="card-subtitle">Free</h5>
+                        <br>
+                    </div>
+                    <div class="card-footer text-center">
+                        YelpCamp Team
+                    </div>
+                </div>
+            </div>
+            <div class='text-center sign col-12'>
+                <h2 class="white-header">Ready to Jump In?</h2>
+                <% if (!isLoggedIn) {%>
+                    <a href="/campgrounds" class="btn btn-primary btn-lg">View Campgrounds</a>
+                <% } else{%> 
+                    <a href="/signin" class="btn btn-primary btn-lg">Log In</a>
+                    <a href="/signup" class="btn btn-success btn-lg">Sign Up</a>
+                <% } %>
+            </div>
+        </div>
+    </div>      
+</section>
