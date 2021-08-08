@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const cookieParser = require('cookie-parser')
 const sha512 = require('hash.js/lib/hash/sha/512');
+const bcrypt = require('bcrypt');
 const Review = require('./models/review');
 const methodOverride = require('method-override');
 const Campground = require('./models/campground');
